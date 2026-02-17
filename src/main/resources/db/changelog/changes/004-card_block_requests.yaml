@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-card_block_requests
+      author: artem
+      changes:
+        - sqlFile:
+            path: db.changelog/sql/004-card_block_requests.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true

@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-users
+      author: artem
+      changes:
+        - sqlFile:
+            path: db.changelog/sql/001-users.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true

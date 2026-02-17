@@ -2,6 +2,38 @@ spring:
   application:
     name: bankcards
 
+  liquibase:
+    change-log: classpath:db.changelog/db.changelog-master.yaml
+    enabled: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bankcards
+    username: postgres
+    password: Artem1945
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+        batch_size: 20
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
+
+  security:
+    jwt:
+      secret: "oRc4YnzgxZXkkwZ346tvVtKaNfRK5TdNzjvdJENWIot"
+      expiration-minutes: 60
+
+
 #
 # application.yml — главный конфигурационный файл Spring Boot.
 
@@ -10,3 +42,6 @@ spring:
   - Указать порт приложения.
   - Настроить параметры безопасности и JWT.
   - Включить Swagger UI.
+
+server:
+  port: 8090

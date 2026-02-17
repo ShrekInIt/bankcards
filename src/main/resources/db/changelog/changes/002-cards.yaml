@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-cards
+      author: artem
+      changes:
+        - sqlFile:
+            path: db.changelog/sql/002-cards.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true

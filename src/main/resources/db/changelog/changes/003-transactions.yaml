@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-transactions
+      author: artem
+      changes:
+        - sqlFile:
+            path: db.changelog/sql/003-transactions.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true

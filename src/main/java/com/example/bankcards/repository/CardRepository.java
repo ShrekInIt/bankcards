@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
 
@@ -34,4 +36,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
             @Param("cardStatus")CardsStatus cardStatus,
             @Param("userId")Long userId,
             Pageable pageable);
+
+    Optional<Card> findByIdAndCardOwner_Id(Long cardId, Long userId);
 }

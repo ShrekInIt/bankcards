@@ -1,8 +1,3 @@
 package com.example.bankcards.dto;
 
-import lombok.Data;
-
-@Data
-public class RefreshTokenDto {
-    private String refreshToken;
-}
+public record RefreshTokenDto(String refreshToken) {}

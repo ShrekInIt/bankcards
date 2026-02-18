@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -32,7 +34,7 @@ public class UserController {
     ){
         String email = checkUser(authentication);
 
-        Long userId = userService.getUserByEmail(email).getId();
+        Long userId = userService.getUserByEmail(email).id();
 
         if ((last4 == null || last4.isEmpty()) && (status == null)) {
             return cardService.findAllCardsUser(userId, page, size);
@@ -51,8 +53,18 @@ public class UserController {
                           @RequestBody BlockRequestDto dto) {
 
         String email = checkUser(authentication);
-        Long userId = userService.getUserByEmail(email).getId();
+        Long userId = userService.getUserByEmail(email).id();
         return cardBlockRequestsService.addRequest(cardId, userId, dto.reason());
+    }
+
+    @GetMapping("/cards/{cardId}/balance")
+    public BigDecimal balanceCard(Authentication authentication,
+                                  @PathVariable Long cardId) {
+
+        String email = checkUser(authentication);
+        Long userId = userService.getUserByEmail(email).id();
+
+        return cardService.getBalance(cardId, userId);
     }
 
     private String checkUser(Authentication authentication){

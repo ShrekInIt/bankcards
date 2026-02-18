@@ -20,17 +20,11 @@ public class JwtService {
     private String jwtSecret;
 
     public JwtAuthenticationDto generateAuthToken(String email) {
-        JwtAuthenticationDto jwtAuthenticationDto = new JwtAuthenticationDto();
-        jwtAuthenticationDto.setToken(generateJwtToken(email));
-        jwtAuthenticationDto.setRefreshToken(generateRefreshToken(email));
-        return jwtAuthenticationDto;
+        return new JwtAuthenticationDto(generateJwtToken(email), generateRefreshToken(email));
     }
 
     public JwtAuthenticationDto refreshBaseToken(String email, String refreshToken) {
-        JwtAuthenticationDto jwtAuthenticationDto = new JwtAuthenticationDto();
-        jwtAuthenticationDto.setToken(generateJwtToken(email));
-        jwtAuthenticationDto.setRefreshToken(refreshToken);
-        return jwtAuthenticationDto;
+        return new JwtAuthenticationDto(generateJwtToken(email), refreshToken);
     }
 
     public String getEmailFromToken(String token) {

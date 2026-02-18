@@ -35,21 +35,21 @@ public class UserService {
 
     @Transactional
     public String addUser(UserCredentialsDto userCredentialsDto){
-        if (userRepository.existsByEmail(userCredentialsDto.getEmail())) {
-            throw new IllegalArgumentException("User with email " + userCredentialsDto.getEmail() + " already exists");
+        if (userRepository.existsByEmail(userCredentialsDto.email())) {
+            throw new IllegalArgumentException("User with email " + userCredentialsDto.email() + " already exists");
         }
 
         User user = Mapper.fromUserCredentialsDtoToUser(userCredentialsDto);
-        user.setPasswordHash(passwordEncoder.encode(userCredentialsDto.getPassword()));
+        user.setPasswordHash(passwordEncoder.encode(userCredentialsDto.password()));
         userRepository.save(user);
         return "User registered successfully";
     }
 
     private User findByCredentials(UserCredentialsDto userCredentialsDto) throws AuthenticationException {
-        Optional<User> optionalUser = userRepository.findByEmail(userCredentialsDto.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmail(userCredentialsDto.email());
         if(optionalUser.isPresent()) {
             User user = optionalUser.get();
-            if(passwordEncoder.matches(userCredentialsDto.getPassword(), user.getPasswordHash())) {
+            if(passwordEncoder.matches(userCredentialsDto.password(), user.getPasswordHash())) {
                 return user;
             }
         }
@@ -62,10 +62,10 @@ public class UserService {
     }
 
     public JwtAuthenticationDto refreshToken(RefreshTokenDto refreshTokenDto) throws AuthenticationException {
-        String refreshToken = refreshTokenDto.getRefreshToken();
+        String refreshToken = refreshTokenDto.refreshToken();
         if (refreshToken != null && jwtService.validateJwtToken(refreshToken)) {
             UserEmailDto userEmailInfo = getUserEmailInfo(jwtService.getEmailFromToken(refreshToken));
-            return jwtService.refreshBaseToken(userEmailInfo.getEmail(), refreshTokenDto.getRefreshToken());
+            return jwtService.refreshBaseToken(userEmailInfo.email(), refreshTokenDto.refreshToken());
         }
         throw new AuthenticationException("Invalid refresh Token");
     }

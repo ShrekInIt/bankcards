@@ -77,11 +77,11 @@ class CardServiceFiltersTest {
         assertEquals(1, result.getNumberOfElements());
 
         UserReadCardResponse dto = result.getContent().getFirst();
-        assertEquals(1L, dto.getCardId());
-        assertEquals(LocalDate.of(2027, 3, 31), dto.getExpiryDate());
-        assertEquals(CardsStatus.active, dto.getCardStatus());
-        assertEquals(new BigDecimal("100.00"), dto.getBalance());
-        assertEquals("**** **** **** **** 1234", dto.getMaskedNumber());
+        assertEquals(1L, dto.cardId());
+        assertEquals(LocalDate.of(2027, 3, 31), dto.expiryDate());
+        assertEquals(CardsStatus.active, dto.cardStatus());
+        assertEquals(new BigDecimal("100.00"), dto.balance());
+        assertEquals("**** **** **** **** 1234", dto.maskedNumber());
     }
 
     @Test
@@ -115,9 +115,9 @@ class CardServiceFiltersTest {
         assertEquals(1, result.getNumberOfElements());
 
         UserReadCardResponse dto = result.getContent().getFirst();
-        assertEquals(2L, dto.getCardId());
-        assertEquals(CardsStatus.blocked, dto.getCardStatus());
-        assertEquals("**** **** **** **** 9999", dto.getMaskedNumber());
+        assertEquals(2L, dto.cardId());
+        assertEquals(CardsStatus.blocked, dto.cardStatus());
+        assertEquals("**** **** **** **** 9999", dto.maskedNumber());
     }
 
     @Test
@@ -151,9 +151,9 @@ class CardServiceFiltersTest {
         assertEquals(1, result.getNumberOfElements());
 
         UserReadCardResponse dto = result.getContent().getFirst();
-        assertEquals(3L, dto.getCardId());
-        assertEquals("**** **** **** **** 7777", dto.getMaskedNumber());
-        assertEquals(new BigDecimal("50.00"), dto.getBalance());
+        assertEquals(3L, dto.cardId());
+        assertEquals("**** **** **** **** 7777", dto.maskedNumber());
+        assertEquals(new BigDecimal("50.00"), dto.balance());
     }
 }
 

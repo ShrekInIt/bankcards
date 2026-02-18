@@ -84,14 +84,14 @@ public class CardServiceTest {
 
         // assert: DTO mapping
         List<UserReadCardResponse> content = result.getContent();
-        assertEquals(1L, content.getFirst().getCardId());
-        assertEquals(LocalDate.of(2027, 3, 31), content.getFirst().getExpiryDate());
-        assertEquals(CardsStatus.active, content.getFirst().getCardStatus());
-        assertEquals(new BigDecimal("100.00"), content.get(0).getBalance());
-        assertEquals("**** **** **** **** 1234", content.get(0).getMaskedNumber());
+        assertEquals(1L, content.getFirst().cardId());
+        assertEquals(LocalDate.of(2027, 3, 31), content.getFirst().expiryDate());
+        assertEquals(CardsStatus.active, content.getFirst().cardStatus());
+        assertEquals(new BigDecimal("100.00"), content.get(0).balance());
+        assertEquals("**** **** **** **** 1234", content.get(0).maskedNumber());
 
-        assertEquals(2L, content.get(1).getCardId());
-        assertEquals("**** **** **** **** 9876", content.get(1).getMaskedNumber());
+        assertEquals(2L, content.get(1).cardId());
+        assertEquals("**** **** **** **** 9876", content.get(1).maskedNumber());
     }
 
     @Test
@@ -140,14 +140,14 @@ public class CardServiceTest {
 
         // assert: DTO mapping
         List<UserReadCardResponse> content = result.getContent();
-        assertEquals(1L, content.getFirst().getCardId());
-        assertEquals(LocalDate.of(2027, 3, 31), content.getFirst().getExpiryDate());
-        assertEquals(CardsStatus.active, content.getFirst().getCardStatus());
-        assertEquals(new BigDecimal("100.00"), content.get(0).getBalance());
-        assertEquals("**** **** **** **** 1234", content.get(0).getMaskedNumber());
+        assertEquals(1L, content.getFirst().cardId());
+        assertEquals(LocalDate.of(2027, 3, 31), content.getFirst().expiryDate());
+        assertEquals(CardsStatus.active, content.getFirst().cardStatus());
+        assertEquals(new BigDecimal("100.00"), content.get(0).balance());
+        assertEquals("**** **** **** **** 1234", content.get(0).maskedNumber());
 
-        assertEquals(2L, content.get(1).getCardId());
-        assertEquals("**** **** **** **** 9876", content.get(1).getMaskedNumber());
+        assertEquals(2L, content.get(1).cardId());
+        assertEquals("**** **** **** **** 9876", content.get(1).maskedNumber());
     }
 
     @Test
@@ -195,14 +195,14 @@ public class CardServiceTest {
 
         // assert: DTO mapping
         List<UserReadCardResponse> content = result.getContent();
-        assertEquals(1L, content.getFirst().getCardId());
-        assertEquals(LocalDate.of(2027, 3, 31), content.getFirst().getExpiryDate());
-        assertEquals(CardsStatus.active, content.getFirst().getCardStatus());
-        assertEquals(new BigDecimal("100.00"), content.get(0).getBalance());
-        assertEquals("**** **** **** **** 1234", content.get(0).getMaskedNumber());
+        assertEquals(1L, content.getFirst().cardId());
+        assertEquals(LocalDate.of(2027, 3, 31), content.getFirst().expiryDate());
+        assertEquals(CardsStatus.active, content.getFirst().cardStatus());
+        assertEquals(new BigDecimal("100.00"), content.get(0).balance());
+        assertEquals("**** **** **** **** 1234", content.get(0).maskedNumber());
 
-        assertEquals(2L, content.get(1).getCardId());
-        assertEquals("**** **** **** **** 9876", content.get(1).getMaskedNumber());
+        assertEquals(2L, content.get(1).cardId());
+        assertEquals("**** **** **** **** 9876", content.get(1).maskedNumber());
     }
 }
 

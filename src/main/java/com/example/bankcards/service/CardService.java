@@ -3,7 +3,6 @@ package com.example.bankcards.service;
 import com.example.bankcards.dto.UserReadCardResponse;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.enums.CardsStatus;
-import com.example.bankcards.exception.NotfoundUserException;
 import com.example.bankcards.repository.CardRepository;
 import com.example.bankcards.util.Mapper;
 import lombok.RequiredArgsConstructor;
@@ -16,25 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CardService {
 
     private final CardRepository cardRepository;
-
-    @Transactional
-    public UserReadCardResponse findCardByCardId(Long id) {
-        Optional<Card> optionalCard = cardRepository.findById(id);
-        if (optionalCard.isEmpty()) {
-            throw new NotfoundUserException("Card with id " + id + " not found");
-        }
-
-        Card card = optionalCard.get();
-        return Mapper.fromCardToUserReadCardResponse(card);
-    }
-
 
     @Transactional(readOnly = true)
     public BigDecimal getBalance(Long cardId, Long userId) {

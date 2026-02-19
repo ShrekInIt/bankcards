@@ -11,8 +11,8 @@ import java.util.List;
 public record CustomUserDetails(User user) implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_admin"),
-                new SimpleGrantedAuthority("ROLE_user"));
+        String role = user.getUserStatus().name();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override

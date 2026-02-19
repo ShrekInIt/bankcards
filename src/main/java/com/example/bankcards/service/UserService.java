@@ -7,6 +7,7 @@ import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.jwt.JwtService;
 import com.example.bankcards.util.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class UserService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserResponseDto getUserByEmail(String email){
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
@@ -45,27 +46,27 @@ public class UserService {
         return "User registered successfully";
     }
 
-    private User findByCredentials(UserCredentialsDto userCredentialsDto) throws AuthenticationException {
-        Optional<User> optionalUser = userRepository.findByEmail(userCredentialsDto.email());
-        if(optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if(passwordEncoder.matches(userCredentialsDto.password(), user.getPasswordHash())) {
-                return user;
-            }
+    private User findByCredentials(UserCredentialsDto dto) {
+        User user = userRepository.findByEmail(dto.email())
+                .orElseThrow(() -> new BadCredentialsException("Bad credentials"));
+        if (!passwordEncoder.matches(dto.password(), user.getPasswordHash())) {
+            throw new BadCredentialsException("Bad credentials");
         }
-        throw new AuthenticationException("Email or Password is not correct");
+        return user;
     }
 
+    @Transactional(readOnly = true)
     public JwtAuthenticationDto signIn(UserCredentialsDto userCredentialsDto) throws AuthenticationException {
         User user = findByCredentials(userCredentialsDto);
-        return jwtService.generateAuthToken(user.getEmail());
+        return jwtService.generateAuthToken(user.getEmail(), user.getUserStatus().name());
     }
 
+    @Transactional(readOnly = true)
     public JwtAuthenticationDto refreshToken(RefreshTokenDto refreshTokenDto) throws AuthenticationException {
         String refreshToken = refreshTokenDto.refreshToken();
         if (refreshToken != null && jwtService.validateJwtToken(refreshToken)) {
             UserEmailDto userEmailInfo = getUserEmailInfo(jwtService.getEmailFromToken(refreshToken));
-            return jwtService.refreshBaseToken(userEmailInfo.email(), refreshTokenDto.refreshToken());
+            return jwtService.refreshBaseToken(userEmailInfo.email(), userEmailInfo.role().name(), refreshTokenDto.refreshToken());
         }
         throw new AuthenticationException("Invalid refresh Token");
     }

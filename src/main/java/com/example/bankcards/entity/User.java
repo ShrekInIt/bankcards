@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -30,8 +32,9 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "user_status", nullable = false)
-    private UsersStatus userStatus = UsersStatus.user;
+    private UsersStatus userStatus = UsersStatus.USER;
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;

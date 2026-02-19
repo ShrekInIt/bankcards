@@ -7,7 +7,6 @@ import com.example.bankcards.entity.enums.BlockRequestStatus;
 import com.example.bankcards.entity.enums.CardsStatus;
 import com.example.bankcards.repository.CardBlockRequestsRepository;
 import com.example.bankcards.repository.CardRepository;
-import com.example.bankcards.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ public class CardBlockRequestsService {
 
     private final CardBlockRequestsRepository cardBlockRequestsRepository;
     private final CardRepository cardRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public Long addRequest(Long cardId, Long userId, String reason) {
@@ -32,10 +30,16 @@ public class CardBlockRequestsService {
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Card " + cardId + " not found"));
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User " + userId + " not found"));
+        CardBlockRequests req = getCardBlockRequests(userId, reason, card);
 
-        if (!card.getCardOwner().getId().equals(userId)) {
+        cardBlockRequestsRepository.save(req);
+        return req.getId();
+    }
+
+    private static CardBlockRequests getCardBlockRequests(Long userId, String reason, Card card) {
+        User user = card.getCardOwner();
+
+        if (!user.getId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Card does not belong to user");
         }
 
@@ -43,13 +47,15 @@ public class CardBlockRequestsService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Card is already blocked");
         }
 
+        if (reason == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Reason is null");
+        }
+
         CardBlockRequests req = new CardBlockRequests();
         req.setCard(card);
         req.setUser(user);
         req.setReason(reason);
         req.setStatus(BlockRequestStatus.pending);
-
-        cardBlockRequestsRepository.save(req);
-        return req.getId();
+        return req;
     }
 }

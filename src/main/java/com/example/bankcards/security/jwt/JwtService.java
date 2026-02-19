@@ -4,6 +4,7 @@ import com.example.bankcards.dto.JwtAuthenticationDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -15,16 +16,17 @@ import java.util.Date;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class JwtService {
     @Value("${spring.security.jwt.secret}")
     private String jwtSecret;
 
-    public JwtAuthenticationDto generateAuthToken(String email) {
-        return new JwtAuthenticationDto(generateJwtToken(email), generateRefreshToken(email));
+    public JwtAuthenticationDto generateAuthToken(String email, String role) {
+        return new JwtAuthenticationDto(generateJwtToken(email, role), generateRefreshToken(email, role));
     }
 
-    public JwtAuthenticationDto refreshBaseToken(String email, String refreshToken) {
-        return new JwtAuthenticationDto(generateJwtToken(email), refreshToken);
+    public JwtAuthenticationDto refreshBaseToken(String email, String role, String refreshToken) {
+        return new JwtAuthenticationDto(generateJwtToken(email, role), refreshToken);
     }
 
     public String getEmailFromToken(String token) {
@@ -60,21 +62,23 @@ public class JwtService {
         return false;
     }
 
-    private String generateJwtToken(String email) {
+    private String generateJwtToken(String email, String role) {
         Date date = new Date(LocalDateTime.now().plusHours(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         return Jwts.builder()
                 .subject(email)
                 .expiration(date)
                 .signWith(getSignInKey())
+                .claim("role", role)
                 .compact();
     }
 
-    private String generateRefreshToken(String email) {
+    private String generateRefreshToken(String email, String role) {
         Date date = new Date(LocalDateTime.now().plusDays(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         return Jwts.builder()
                 .subject(email)
                 .expiration(date)
                 .signWith(getSignInKey())
+                .claim("role", role)
                 .compact();
     }
 

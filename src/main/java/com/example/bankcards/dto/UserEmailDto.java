@@ -1,3 +1,5 @@
 package com.example.bankcards.dto;
 
-public record UserEmailDto(String email) {}
+import com.example.bankcards.entity.enums.UsersStatus;
+
+public record UserEmailDto(String email, UsersStatus role) {}

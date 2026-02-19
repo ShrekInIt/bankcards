@@ -1,5 +1,6 @@
 package com.example.bankcards.util;
 
+import com.example.bankcards.dto.AdminCardDto;
 import com.example.bankcards.dto.UserCredentialsDto;
 import com.example.bankcards.dto.UserReadCardResponse;
 import com.example.bankcards.dto.UserResponseDto;
@@ -20,16 +21,27 @@ public class Mapper {
                 user.getUserStatus(), user.getCreatedAt(), user.isActive());
     }
 
-    public static User fromUserCredentialsDtoToUser(UserCredentialsDto userDto) {
+    public static User fromUserCredentialsDtoToUser(UserCredentialsDto dto) {
         User user = new User();
-
-        user.setName(userDto.name());
-        user.setEmail(userDto.email());
+        user.setName(dto.name());
+        user.setEmail(dto.email());
         user.setActive(true);
-        user.setPasswordHash(userDto.password());
-        user.setUserStatus(UsersStatus.user);
+        user.setUserStatus(UsersStatus.USER);
         user.setCreatedAt(OffsetDateTime.now());
-
         return user;
+    }
+
+    public static AdminCardDto fromCardToAdminCardDto(Card c) {
+        var o = c.getCardOwner();
+        return new AdminCardDto(
+                c.getId(),
+                "**** **** **** " + c.getLast4(),
+                c.getExpiryDate(),
+                c.getCreatedAt(),
+                c.getCardStatus(),
+                c.getBalance(),
+                o.getId(),
+                o.getName()
+        );
     }
 }

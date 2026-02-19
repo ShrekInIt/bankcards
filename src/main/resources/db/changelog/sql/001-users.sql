@@ -1,7 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 DO $$ BEGIN
-    CREATE TYPE users_status AS ENUM ('user', 'admin');
+    CREATE TYPE users_status AS ENUM ('USER', 'ADMIN');
 EXCEPTION
     WHEN duplicate_object THEN NULL;
 END $$;

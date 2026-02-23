@@ -3,7 +3,6 @@ package com.example.bankcards.util;
 import com.example.bankcards.dto.*;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.User;
-import com.example.bankcards.entity.enums.UsersStatus;
 
 import java.time.OffsetDateTime;
 

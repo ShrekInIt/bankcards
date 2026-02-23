@@ -1,9 +1,6 @@
 package com.example.bankcards.util;
 
-import com.example.bankcards.dto.AdminCardDto;
-import com.example.bankcards.dto.UserCredentialsDto;
-import com.example.bankcards.dto.UserReadCardResponse;
-import com.example.bankcards.dto.UserResponseDto;
+import com.example.bankcards.dto.*;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.entity.enums.UsersStatus;
@@ -25,17 +22,22 @@ public class Mapper {
         User user = new User();
         user.setName(dto.name());
         user.setEmail(dto.email());
-        user.setActive(true);
-        user.setUserStatus(UsersStatus.USER);
         user.setCreatedAt(OffsetDateTime.now());
         return user;
+    }
+
+    public static void applyUserUpdate(User user, UserUpdateDto dto) {
+        if (dto.name() != null) user.setName(dto.name());
+        if (dto.email() != null) user.setEmail(dto.email().trim().toLowerCase());
+        if (dto.userStatus() != null) user.setUserStatus(dto.userStatus());
+        if (dto.isActive() != null) user.setActive(dto.isActive());
     }
 
     public static AdminCardDto fromCardToAdminCardDto(Card c) {
         var o = c.getCardOwner();
         return new AdminCardDto(
                 c.getId(),
-                "**** **** **** " + c.getLast4(),
+                "**** **** **** ****" + c.getLast4(),
                 c.getExpiryDate(),
                 c.getCreatedAt(),
                 c.getCardStatus(),

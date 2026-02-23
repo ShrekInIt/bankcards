@@ -6,14 +6,20 @@ import com.example.bankcards.exception.NotfoundUserException;
 import com.example.bankcards.repository.UserRepository;
 import com.example.bankcards.security.jwt.JwtService;
 import com.example.bankcards.util.Mapper;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.naming.AuthenticationException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,26 +30,73 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponseDto getUserByEmail(String email){
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotfoundUserException("User with email " + email + " not found"));
+        return Mapper.fromUserToUserResponseDto(user);
+    }
 
-        if (optionalUser.isEmpty()) {
-            throw new NotfoundUserException("User with email " + email + " not found");
+    @Transactional(readOnly = true)
+    public UserResponseDto getUserById(Long id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotfoundUserException("User with id " + id + " not found"));
+        return Mapper.fromUserToUserResponseDto(user);
+    }
+
+    @Transactional
+    public UserResponseDto createUser(UserCredentialsDto userCreateDto) {
+        if (userRepository.existsByEmail(userCreateDto.email())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with email " + userCreateDto.email() + " already exists");
         }
 
-        User user = optionalUser.get();
+        User user = Mapper.fromUserCredentialsDtoToUser(userCreateDto);
+
+        userRepository.save(user);
+
         return Mapper.fromUserToUserResponseDto(user);
+    }
+
+    @Transactional
+    public UserResponseDto updateUser(Long id, UserUpdateDto request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotfoundUserException("User with id " + id + " not found"));
+
+        if (request.email() != null) {
+            String email = request.email().trim().toLowerCase();
+            boolean exists = userRepository.existsByEmailAndIdNot(email, id);
+            if (exists) throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
+        }
+
+        Mapper.applyUserUpdate(user, request);
+
+        userRepository.save(user);
+        return Mapper.fromUserToUserResponseDto(user);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotfoundUserException("User with id " + id + " not found"));
+
+        userRepository.delete(user);
     }
 
     @Transactional
     public String addUser(UserCredentialsDto userCredentialsDto){
         if (userRepository.existsByEmail(userCredentialsDto.email())) {
-            throw new IllegalArgumentException("User with email " + userCredentialsDto.email() + " already exists");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with email " + userCredentialsDto.email() + " already exists");
         }
 
         User user = Mapper.fromUserCredentialsDtoToUser(userCredentialsDto);
         user.setPasswordHash(passwordEncoder.encode(userCredentialsDto.password()));
         userRepository.save(user);
         return "User registered successfully";
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserResponseDto> findAllUsers(@Min(0) int page, @Min(1) @Max(100) int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> usersPage = userRepository.findAllByOrderByCreatedAtDesc(pageable);
+        return usersPage.map(Mapper::fromUserToUserResponseDto);
     }
 
     private User findByCredentials(UserCredentialsDto dto) {

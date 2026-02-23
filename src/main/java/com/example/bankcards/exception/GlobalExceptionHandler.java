@@ -20,6 +20,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
     }
 
+    @ExceptionHandler(NotfoundUserException.class)
+    public ResponseEntity<String> handleNotFound(NotfoundUserException ex) {
+        return ResponseEntity.status(404).body(ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleOther(Exception ex) {
         return ResponseEntity.status(500).body("An error occurred: " + ex.getMessage());

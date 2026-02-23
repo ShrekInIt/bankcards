@@ -53,7 +53,7 @@ public class TransactionService {
         }
 
         if(cardFrom.getCardStatus() == CardsStatus.blocked || cardTo.getCardStatus() == CardsStatus.blocked ){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Card is blockedd");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Card is blocked");
         }
 
         OffsetDateTime now = OffsetDateTime.now();

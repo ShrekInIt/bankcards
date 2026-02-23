@@ -16,18 +16,17 @@ import java.util.Optional;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
 
-    Page<Card> findAllByCardOwner_Id(Long userId, Pageable pageable);
-    Page<Card> findAllByCardOwner_IdAndCardStatus(Long userId, CardsStatus status, Pageable pageable);
-    Page<Card> findAllByCardOwner_IdAndLast4(Long userId, String last4, Pageable pageable);
-    Page<Card> findAllByCardOwner_IdAndCardStatusAndLast4(Long userId, CardsStatus status, String last4, Pageable pageable);
+    Page<Card> findAllByCardOwner_IdAndDeletedFalse(Long userId, Pageable pageable);
+    Page<Card> findAllByCardOwner_IdAndCardStatusAndDeletedFalse(Long userId, CardsStatus status, Pageable pageable);
+    Page<Card> findAllByCardOwner_IdAndLast4AndDeletedFalse(Long userId, String last4, Pageable pageable);
+    Page<Card> findAllByCardOwner_IdAndCardStatusAndLast4AndDeletedFalse(Long userId, CardsStatus status, String last4, Pageable pageable);
 
-
-    Optional<Card> findByIdAndCardOwner_Id(Long cardId, Long userId);
+    Optional<Card> findByIdAndCardOwner_IdAndDeletedFalse(Long cardId, Long userId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT c FROM Card c WHERE c.id = :cardId AND c.cardOwner.id = :userId")
+    @Query("SELECT c FROM Card c WHERE c.id = :cardId AND c.cardOwner.id = :userId AND c.deleted = false")
     Optional<Card> findByIdAndOwnerForUpdate(Long cardId, Long userId);
 
     @EntityGraph(attributePaths = "cardOwner")
-    Page<Card> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    Page<Card> findAllByDeletedFalseOrderByCreatedAtDesc(Pageable pageable);
 }

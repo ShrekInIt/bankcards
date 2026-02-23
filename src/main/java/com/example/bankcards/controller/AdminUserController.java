@@ -1,8 +1,8 @@
 package com.example.bankcards.controller;
 
-import com.example.bankcards.dto.UserCredentialsDto;
-import com.example.bankcards.dto.UserResponseDto;
-import com.example.bankcards.dto.UserUpdateDto;
+import com.example.bankcards.dto.user.UserCredentialsDto;
+import com.example.bankcards.dto.user.UserResponseDto;
+import com.example.bankcards.dto.user.UserUpdateDto;
 import com.example.bankcards.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;

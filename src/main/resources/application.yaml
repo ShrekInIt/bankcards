@@ -33,13 +33,17 @@ spring:
       secret: "oRc4YnzgxZXkkwZ346tvVtKaNfRK5TdNzjvdJENWIot"
       expiration-minutes: 60
 
+  crypto:
+    pan:
+      key-base64: "DiOlPzi7YBGVzuM/4WzooFbe7DB2/6WaYYl7mZun3m4="
+
 
 #
 # application.yml — главный конфигурационный файл Spring Boot.
 
 Что нужно сделать:
-  - Указать настройки подключения к базе данных.
-  - Указать порт приложения.
+  - Указать настройки подключения к базе данных. - сделано
+  - Указать порт приложения. - сделано
   - Настроить параметры безопасности и JWT.
   - Включить Swagger UI.
 

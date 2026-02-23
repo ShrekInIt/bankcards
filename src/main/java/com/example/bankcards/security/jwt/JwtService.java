@@ -1,6 +1,6 @@
 package com.example.bankcards.security.jwt;
 
-import com.example.bankcards.dto.JwtAuthenticationDto;
+import com.example.bankcards.dto.jwt.JwtAuthenticationDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;

@@ -1,6 +1,11 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.*;
+import com.example.bankcards.dto.jwt.JwtAuthenticationDto;
+import com.example.bankcards.dto.jwt.RefreshTokenDto;
+import com.example.bankcards.dto.user.UserCredentialsDto;
+import com.example.bankcards.dto.user.UserEmailDto;
+import com.example.bankcards.dto.user.UserResponseDto;
+import com.example.bankcards.dto.user.UserUpdateDto;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.exception.NotfoundUserException;
 import com.example.bankcards.repository.UserRepository;

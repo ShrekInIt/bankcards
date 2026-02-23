@@ -1,12 +1,10 @@
-package com.example.bankcards.dto;
+package com.example.bankcards.dto.user;
 
-import com.example.bankcards.entity.enums.UsersStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-public record UserUpdateDto(
+public record UserCredentialsDto(
         @NotBlank(message = "Name is required")
         @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
         String name,
@@ -15,11 +13,7 @@ public record UserUpdateDto(
         @Email(message = "Invalid email format")
         String email,
 
-        @NotBlank
-        @NotEmpty
-        UsersStatus userStatus,
-
-        @NotBlank
-        @NotEmpty
-        Boolean isActive
+        @NotBlank(message = "Password is required")
+        @Size(min = 8, message = "Password must be at least 8 characters")
+        String password
 ) {}

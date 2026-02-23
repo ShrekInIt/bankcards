@@ -1,6 +1,10 @@
 package com.example.bankcards.util;
 
-import com.example.bankcards.dto.*;
+import com.example.bankcards.dto.card.AdminCardDto;
+import com.example.bankcards.dto.user.UserCredentialsDto;
+import com.example.bankcards.dto.user.UserReadCardResponse;
+import com.example.bankcards.dto.user.UserResponseDto;
+import com.example.bankcards.dto.user.UserUpdateDto;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.User;
 

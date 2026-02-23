@@ -1,6 +1,6 @@
 package com.example.bankcards.service;
 
-import com.example.bankcards.dto.UserReadCardResponse;
+import com.example.bankcards.dto.user.UserReadCardResponse;
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.enums.CardsStatus;
 import com.example.bankcards.repository.CardRepository;
@@ -59,7 +59,7 @@ class CardServiceFiltersTest {
         PageRequest pr = PageRequest.of(page, size);
         Page<Card> cardsPage = new PageImpl<>(List.of(c1), pr, totalElements);
 
-        when(cardRepository.findAllByCardOwner_IdAndCardStatusAndLast4(eq(userId), eq(status), eq(last4), any(Pageable.class)))
+        when(cardRepository.findAllByCardOwner_IdAndCardStatusAndLast4AndDeletedFalse(eq(userId), eq(status), eq(last4), any(Pageable.class)))
                 .thenReturn(cardsPage);
 
         Page<UserReadCardResponse> result =
@@ -67,7 +67,7 @@ class CardServiceFiltersTest {
 
         ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
         verify(cardRepository, times(1))
-                .findAllByCardOwner_IdAndCardStatusAndLast4(eq(userId), eq(status), eq(last4), captor.capture());
+                .findAllByCardOwner_IdAndCardStatusAndLast4AndDeletedFalse(eq(userId), eq(status), eq(last4), captor.capture());
 
         Pageable passed = captor.getValue();
         assertEquals(page, passed.getPageNumber());
@@ -97,7 +97,7 @@ class CardServiceFiltersTest {
         PageRequest pr = PageRequest.of(page, size);
         Page<Card> cardsPage = new PageImpl<>(List.of(c1), pr, totalElements);
 
-        when(cardRepository.findAllByCardOwner_IdAndCardStatus(eq(userId), eq(status), any(Pageable.class)))
+        when(cardRepository.findAllByCardOwner_IdAndCardStatusAndDeletedFalse(eq(userId), eq(status), any(Pageable.class)))
                 .thenReturn(cardsPage);
 
         Page<UserReadCardResponse> result =
@@ -105,7 +105,7 @@ class CardServiceFiltersTest {
 
         ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
         verify(cardRepository, times(1))
-                .findAllByCardOwner_IdAndCardStatus( eq(userId), eq(status), captor.capture());
+                .findAllByCardOwner_IdAndCardStatusAndDeletedFalse( eq(userId), eq(status), captor.capture());
 
         Pageable passed = captor.getValue();
         assertEquals(page, passed.getPageNumber());
@@ -133,7 +133,7 @@ class CardServiceFiltersTest {
         PageRequest pr = PageRequest.of(page, size);
         Page<Card> cardsPage = new PageImpl<>(List.of(c1), pr, totalElements);
 
-        when(cardRepository.findAllByCardOwner_IdAndLast4(eq(userId), eq(last4), any(Pageable.class)))
+        when(cardRepository.findAllByCardOwner_IdAndLast4AndDeletedFalse(eq(userId), eq(last4), any(Pageable.class)))
                 .thenReturn(cardsPage);
 
         Page<UserReadCardResponse> result =
@@ -141,7 +141,7 @@ class CardServiceFiltersTest {
 
         ArgumentCaptor<Pageable> captor = ArgumentCaptor.forClass(Pageable.class);
         verify(cardRepository, times(1))
-                .findAllByCardOwner_IdAndLast4(eq(userId), eq(last4), captor.capture());
+                .findAllByCardOwner_IdAndLast4AndDeletedFalse(eq(userId), eq(last4), captor.capture());
 
         Pageable passed = captor.getValue();
         assertEquals(page, passed.getPageNumber());

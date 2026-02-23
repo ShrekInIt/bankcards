@@ -1,6 +1,6 @@
 package com.example.bankcards.repository;
 
-import com.example.bankcards.dto.UserEmailDto;
+import com.example.bankcards.dto.user.UserEmailDto;
 import com.example.bankcards.entity.User;
 import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    @Query("SELECT new com.example.bankcards.dto.UserEmailDto(u.email, u.userStatus) " +
+    @Query("SELECT new com.example.bankcards.dto.user.UserEmailDto(u.email, u.userStatus) " +
             "FROM User u WHERE u.email = :email")
     Optional<UserEmailDto> findUserEmailDtoByEmail(@Param("email") String email);
 

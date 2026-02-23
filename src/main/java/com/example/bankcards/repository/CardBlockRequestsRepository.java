@@ -5,10 +5,13 @@ import com.example.bankcards.entity.enums.BlockRequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface CardBlockRequestsRepository extends JpaRepository<CardBlockRequests, Long> {
 
     boolean existsByCard_IdAndStatus(Long cardId, BlockRequestStatus status);
 
+    Optional<CardBlockRequests> findTopByCardIdOrderByCreatedAtDesc(Long cardId);
 }

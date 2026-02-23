@@ -50,4 +50,7 @@ public class Card {
 
     @Column(name = "balance", precision = 15, scale = 2, nullable = false)
     private BigDecimal balance = BigDecimal.ZERO;
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean deleted  = false;
 }

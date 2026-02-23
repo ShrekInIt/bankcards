@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS cards(
     created_at timestamptz NOT NULL DEFAULT now(),
     card_status cards_status DEFAULT 'active',
     balance NUMERIC(15, 2) NOT NULL DEFAULT 0.00,
+    is_deleted boolean NOT NULL DEFAULT false,
 
     CONSTRAINT last4_digits CHECK (last4 ~ '^[0-9]{4}$'),
 
@@ -28,3 +29,4 @@ CREATE TABLE IF NOT EXISTS cards(
 CREATE INDEX cards_card_owner_idx ON cards (card_owner);
 CREATE INDEX cards_card_status_idx ON cards (card_status);
 CREATE INDEX cards_expiry_date_idx ON cards (expiry_date);
+CREATE INDEX idx_cards_is_deleted ON cards(is_deleted);

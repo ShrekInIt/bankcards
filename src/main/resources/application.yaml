@@ -7,9 +7,9 @@ spring:
     enabled: false
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/bankcards
-    username: postgres
-    password: Artem1945
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 30000
@@ -30,22 +30,12 @@ spring:
 
   security:
     jwt:
-      secret: "oRc4YnzgxZXkkwZ346tvVtKaNfRK5TdNzjvdJENWIot"
+      secret: ${JWT_SECRET}
       expiration-minutes: 60
 
   crypto:
     pan:
-      key-base64: "DiOlPzi7YBGVzuM/4WzooFbe7DB2/6WaYYl7mZun3m4="
-
-
-#
-# application.yml — главный конфигурационный файл Spring Boot.
-
-Что нужно сделать:
-  - Указать настройки подключения к базе данных. - сделано
-  - Указать порт приложения. - сделано
-  - Настроить параметры безопасности и JWT.
-  - Включить Swagger UI.
+      key-base64: ${CRYPTO_KEY_BASE64}
 
 server:
-  port: 8090
+  port: ${APP_PORT:8080}

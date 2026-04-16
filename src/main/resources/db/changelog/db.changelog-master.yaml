@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db.changelog/changes/002-cards.yaml
   - include:
       file: db.changelog/changes/003-transactions.yaml
+  - include:
+      file: db/changelog/changes/004-card_block_requests.yaml

@@ -3,8 +3,8 @@ spring:
     name: bankcards
 
   liquibase:
-    change-log: classpath:db.changelog/db.changelog-master.yaml
-    enabled: false
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}

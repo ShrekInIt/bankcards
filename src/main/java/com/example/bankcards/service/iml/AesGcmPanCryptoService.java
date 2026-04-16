@@ -1,5 +1,6 @@
-package com.example.bankcards.service;
+package com.example.bankcards.service.iml;
 
+import com.example.bankcards.service.IPanCrypto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +65,7 @@ public class AesGcmPanCryptoService implements IPanCrypto {
 
     @Override
     public String decrypt(byte[] panEnc) {
-        if (panEnc == null || panEnc.length < 1 + IV_LEN + 16) { // минимум: ver+iv+tag
+        if (panEnc == null || panEnc.length < 1 + IV_LEN + 16) {
             throw new IllegalArgumentException("Invalid encrypted PAN payload");
         }
 

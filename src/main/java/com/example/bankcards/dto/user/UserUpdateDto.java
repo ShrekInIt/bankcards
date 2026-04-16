@@ -3,7 +3,7 @@ package com.example.bankcards.dto.user;
 import com.example.bankcards.entity.enums.UsersStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UserUpdateDto(
@@ -15,11 +15,9 @@ public record UserUpdateDto(
         @Email(message = "Invalid email format")
         String email,
 
-        @NotBlank
-        @NotEmpty
+        @NotNull(message = "User status is required")
         UsersStatus userStatus,
 
-        @NotBlank
-        @NotEmpty
+        @NotNull(message = "Active flag is required")
         Boolean isActive
 ) {}

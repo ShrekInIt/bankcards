@@ -2,9 +2,15 @@ databaseChangeLog:
   - changeSet:
       id: 002-cards
       author: artem
+      preConditions:
+        - onFail: MARK_RAN
+        - onError: HALT
+        - not:
+            tableExists:
+              tableName: cards
       changes:
         - sqlFile:
-            path: db.changelog/sql/002-cards.sql
+            path: db/changelog/sql/002-cards.sql
             relativeToChangelogFile: false
             splitStatements: true
             stripComments: true

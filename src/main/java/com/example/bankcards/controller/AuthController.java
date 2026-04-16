@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.naming.AuthenticationException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -26,16 +24,12 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<JwtAuthenticationDto> signIn(@RequestBody UserCredentialsDto userCredentialsDto) {
-        try {
-            JwtAuthenticationDto jwtAuthenticationDto = userService.signIn(userCredentialsDto);
-            return ResponseEntity.ok(jwtAuthenticationDto);
-        }catch (AuthenticationException e){
-            throw new RuntimeException("Authentication failed " +  e.getMessage());
-        }
+        JwtAuthenticationDto jwtAuthenticationDto = userService.signIn(userCredentialsDto);
+        return ResponseEntity.ok(jwtAuthenticationDto);
     }
 
     @PostMapping("/refresh")
-    public JwtAuthenticationDto refresh(@RequestBody RefreshTokenDto refreshTokenDto) throws AuthenticationException {
+    public JwtAuthenticationDto refresh(@RequestBody RefreshTokenDto refreshTokenDto)  {
         return userService.refreshToken(refreshTokenDto);
     }
 }

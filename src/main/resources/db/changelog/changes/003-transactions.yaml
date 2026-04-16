@@ -2,9 +2,15 @@ databaseChangeLog:
   - changeSet:
       id: 003-transactions
       author: artem
+      preConditions:
+        - onFail: MARK_RAN
+        - onError: HALT
+        - not:
+            tableExists:
+              tableName: transactions
       changes:
         - sqlFile:
-            path: db.changelog/sql/003-transactions.sql
+            path: db/changelog/sql/003-transactions.sql
             relativeToChangelogFile: false
             splitStatements: true
             stripComments: true

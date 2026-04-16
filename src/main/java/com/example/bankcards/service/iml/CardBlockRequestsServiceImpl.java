@@ -1,4 +1,4 @@
-package com.example.bankcards.service;
+package com.example.bankcards.service.iml;
 
 import com.example.bankcards.entity.Card;
 import com.example.bankcards.entity.CardBlockRequests;
@@ -7,6 +7,7 @@ import com.example.bankcards.entity.enums.BlockRequestStatus;
 import com.example.bankcards.entity.enums.CardsStatus;
 import com.example.bankcards.repository.CardBlockRequestsRepository;
 import com.example.bankcards.repository.CardRepository;
+import com.example.bankcards.service.CardBlockRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
-public class CardBlockRequestsService {
+public class CardBlockRequestsServiceImpl implements CardBlockRequestService {
 
     private final CardBlockRequestsRepository cardBlockRequestsRepository;
     private final CardRepository cardRepository;

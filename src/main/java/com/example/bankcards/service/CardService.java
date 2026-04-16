@@ -4,165 +4,127 @@ import com.example.bankcards.dto.card.AdminCardDto;
 import com.example.bankcards.dto.card.CardCreateRequestDto;
 import com.example.bankcards.dto.user.UserReadCardResponse;
 import com.example.bankcards.entity.Card;
-import com.example.bankcards.entity.CardBlockRequests;
-import com.example.bankcards.entity.User;
-import com.example.bankcards.entity.enums.BlockRequestStatus;
 import com.example.bankcards.entity.enums.CardsStatus;
-import com.example.bankcards.exception.NotfoundCardException;
-import com.example.bankcards.exception.NotfoundUserException;
-import com.example.bankcards.repository.CardBlockRequestsRepository;
-import com.example.bankcards.repository.CardRepository;
-import com.example.bankcards.repository.UserRepository;
-import com.example.bankcards.util.Mapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 
-@Service
-@RequiredArgsConstructor
-public class CardService {
+/**
+ * Сервис для работы с банковскими картами.
+ * Используется для получения, создания, изменения статуса и просмотра карт.
+ */
+public interface CardService {
 
-    private final CardRepository cardRepository;
-    private final UserRepository userRepository;
-    private final AesGcmPanCryptoService  panCryptoService;
-    private final CardBlockRequestsRepository cardBlockRequestsRepository;
+    /**
+     * Возвращает карту для выполнения перевода с проверкой принадлежности пользователю.
+     *
+     * @param id идентификатор карты
+     * @param userId идентификатор пользователя
+     * @return найденная карта
+     */
+    Card findCardByIdForTransfer(Long id, Long userId);
 
-    @Transactional
-    public Card findCardByIdForTransfer(Long id, Long userId) {
-        return cardRepository.findByIdAndOwnerForUpdate(id, userId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Card not found"));
-    }
+    /**
+     * Возвращает список всех карт с постраничным выводом для администратора.
+     *
+     * @param page номер страницы
+     * @param size размер страницы
+     * @return страница с картами
+     */
+    Page<AdminCardDto> findAllCards(int page, int size);
 
-    @Transactional(readOnly = true)
-    public Page<AdminCardDto> findAllCards(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Card> cardsPage = cardRepository.findAllByDeletedFalseOrderByCreatedAtDesc(pageable);
-        return cardsPage.map(Mapper::fromCardToAdminCardDto);
-    }
+    /**
+     * Создаёт новую карту.
+     *
+     * @param request данные для создания карты
+     * @return созданная карта
+     */
+    AdminCardDto createCard(CardCreateRequestDto request);
 
-    @Transactional()
-    public AdminCardDto createCard(CardCreateRequestDto request) {
-        User user = userRepository.findById(request.ownerId()).orElseThrow(() -> new NotfoundUserException("User with id " + request.ownerId() + " not found"));
-        String pan = request.pan().trim();
+    /**
+     * Возвращает карту по идентификатору.
+     *
+     * @param id идентификатор карты
+     * @return данные карты
+     */
+    AdminCardDto getCardById(Long id);
 
-        Card card = new Card();
-        card.setCardOwner(user);
-        card.setPanEnc(panCryptoService.encrypt(pan));
-        card.setLast4(pan.substring(pan.length() - 4));
-        card.setExpiryDate(request.expiryDate());
+    /**
+     * Активирует карту.
+     *
+     * @param id идентификатор карты
+     * @param userId идентификатор пользователя
+     * @return обновлённые данные карты
+     */
+    AdminCardDto activateCard(Long id, Long userId);
 
-        Card saved = cardRepository.save(card);
+    /**
+     * Блокирует карту.
+     *
+     * @param id идентификатор карты
+     * @param userId идентификатор пользователя
+     * @return обновлённые данные карты
+     */
+    AdminCardDto blockCard(Long id, Long userId);
 
-        return Mapper.fromCardToAdminCardDto(saved);
-    }
+    /**
+     * Удаляет карту по идентификатору.
+     *
+     * @param id идентификатор карты
+     */
+    void deleteCard(Long id);
 
-    @Transactional(readOnly = true)
-    public AdminCardDto getCardById(Long id) {
-        Card card = cardRepository.findById(id).orElseThrow(() -> new NotfoundCardException("Card with id " + id + " not found"));
-        return Mapper.fromCardToAdminCardDto(card);
-    }
+    /**
+     * Возвращает текущий баланс карты.
+     *
+     * @param cardId идентификатор карты
+     * @param userId идентификатор пользователя
+     * @return баланс карты
+     */
+    BigDecimal getBalance(Long cardId, Long userId);
 
-    @Transactional
-    public AdminCardDto activateCard(Long id, Long userId) {
-        Card card = cardRepository.findById(id).orElseThrow(() -> new NotfoundCardException("Card with id " + id + " not found"));
+    /**
+     * Возвращает все карты пользователя с постраничным выводом.
+     *
+     * @param userId идентификатор пользователя
+     * @param page номер страницы
+     * @param size размер страницы
+     * @return страница с картами пользователя
+     */
+    Page<UserReadCardResponse> findAllCardsUser(Long userId, int page, int size);
 
-        if(!card.getCardOwner().getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Card does not belong to user");
-        }
+    /**
+     * Возвращает карты пользователя с фильтрацией по статусу и последним цифрам номера.
+     *
+     * @param userId идентификатор пользователя
+     * @param last4 последние 4 цифры номера карты
+     * @param cardStatus статус карты
+     * @param page номер страницы
+     * @param size размер страницы
+     * @return страница с отфильтрованными картами
+     */
+    Page<UserReadCardResponse> findAllCardsUserByStatusAndLast4(Long userId, String last4, CardsStatus cardStatus, int page, int size);
 
-        if (card.getExpiryDate().isBefore(OffsetDateTime.now().toLocalDate())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Card is expired");
-        }
+    /**
+     * Возвращает карты пользователя по статусу.
+     *
+     * @param userId идентификатор пользователя
+     * @param cardStatus статус карты
+     * @param page номер страницы
+     * @param size размер страницы
+     * @return страница с картами
+     */
+    Page<UserReadCardResponse> findAllUserCardsByStatus(Long userId, CardsStatus cardStatus, int page, int size);
 
-        card.setCardStatus(CardsStatus.active);
-        cardRepository.save(card);
+    /**
+     * Возвращает карты пользователя по последним 4 цифрам номера.
+     *
+     * @param userId идентификатор пользователя
+     * @param last4 последние 4 цифры номера карты
+     * @param page номер страницы
+     * @param size размер страницы
+     * @return страница с картами
+     */
+    Page<UserReadCardResponse> findAllUserCardsByLast4(Long userId, String last4, int page, int size);
 
-        return Mapper.fromCardToAdminCardDto(card);
-    }
-
-    @Transactional
-    public AdminCardDto blockCard(Long id, Long userId) {
-        Card card = cardRepository.findById(id).orElseThrow(() -> new NotfoundCardException("Card with id " + id + " not found"));
-
-        if(!card.getCardOwner().getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Card does not belong to user");
-        }
-
-        CardBlockRequests req = cardBlockRequestsRepository.findTopByCardIdOrderByCreatedAtDesc(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "No block request for this card"));
-
-        if (req.getStatus() != BlockRequestStatus.pending) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Block request is not pending");
-        }
-
-        req.setStatus(BlockRequestStatus.approved);
-        req.setProcessedAt(OffsetDateTime.now());
-        card.setCardStatus(CardsStatus.blocked);
-        cardBlockRequestsRepository.save(req);
-        cardRepository.save(card);
-
-
-        return Mapper.fromCardToAdminCardDto(card);
-    }
-
-    @Transactional
-    public void deleteCard(Long id) {
-        Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new NotfoundCardException("Card with id " + id + " not found"));
-
-        if (card.getCardStatus() == CardsStatus.active) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Active card cannot be deleted");
-        }
-
-        if (card.getBalance() != null && card.getBalance().compareTo(BigDecimal.ZERO) != 0) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Card balance must be zero to delete");
-        }
-
-        card.setDeleted(true);
-        cardRepository.save(card);
-    }
-
-    @Transactional(readOnly = true)
-    public BigDecimal getBalance(Long cardId, Long userId) {
-        Card card = cardRepository.findByIdAndCardOwner_IdAndDeletedFalse(cardId, userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Card not found"));
-
-        return card.getBalance();
-    }
-
-    @Transactional(readOnly = true)
-    public Page<UserReadCardResponse> findAllCardsUser(Long userId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Card> cardsPage = cardRepository.findAllByCardOwner_IdAndDeletedFalse(userId, pageable);
-        return cardsPage.map(Mapper::fromCardToUserReadCardResponse);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<UserReadCardResponse> findAllCardsUserByStatusAndLast4(Long userId, String last4, CardsStatus cardStatus, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Card> cardPage = cardRepository.findAllByCardOwner_IdAndCardStatusAndLast4AndDeletedFalse(userId, cardStatus, last4, pageable);
-        return cardPage.map(Mapper::fromCardToUserReadCardResponse);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<UserReadCardResponse> findAllUserCardsByStatus(Long userId, CardsStatus cardStatus, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Card> cardsPage = cardRepository.findAllByCardOwner_IdAndCardStatusAndDeletedFalse(userId, cardStatus, pageable);
-        return cardsPage.map(Mapper::fromCardToUserReadCardResponse);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<UserReadCardResponse> findAllUserCardsByLast4(Long userId, String last4, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Card> cardsPage = cardRepository.findAllByCardOwner_IdAndLast4AndDeletedFalse(userId, last4, pageable);
-        return cardsPage.map(Mapper::fromCardToUserReadCardResponse);
-    }
 }

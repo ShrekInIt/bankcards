@@ -2,9 +2,15 @@ databaseChangeLog:
   - changeSet:
       id: 001-users
       author: artem
+      preConditions:
+        - onFail: MARK_RAN
+        - onError: HALT
+        - not:
+            tableExists:
+              tableName: users
       changes:
         - sqlFile:
-            path: db.changelog/sql/001-users.sql
+            path: db/changelog/sql/001-users.sql
             relativeToChangelogFile: false
             splitStatements: true
             stripComments: true

@@ -2,9 +2,15 @@ databaseChangeLog:
   - changeSet:
       id: 004-card_block_requests
       author: artem
+      preConditions:
+        - onFail: MARK_RAN
+        - onError: HALT
+        - not:
+            tableExists:
+              tableName: card_block_requests
       changes:
         - sqlFile:
-            path: db.changelog/sql/004-card_block_requests.sql
+            path: db/changelog/sql/004-card_block_requests.sql
             relativeToChangelogFile: false
             splitStatements: true
             stripComments: true

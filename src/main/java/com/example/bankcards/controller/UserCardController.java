@@ -5,8 +5,8 @@ import com.example.bankcards.dto.transfer.TransferRequest;
 import com.example.bankcards.dto.transfer.TransferResponse;
 import com.example.bankcards.dto.user.UserReadCardResponse;
 import com.example.bankcards.entity.enums.CardsStatus;
-import com.example.bankcards.service.CardBlockRequestsService;
 import com.example.bankcards.service.CardService;
+import com.example.bankcards.service.CardBlockRequestService;
 import com.example.bankcards.service.TransactionService;
 import com.example.bankcards.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class UserCardController {
 
     private final UserService userService;
     private final CardService cardService;
-    private final CardBlockRequestsService cardBlockRequestsService;
+    private final CardBlockRequestService cardBlockRequestsService;
     private final TransactionService transactionService;
 
     @GetMapping("/cards")
@@ -63,7 +63,7 @@ public class UserCardController {
 
         String email = checkUser(authentication);
         Long userId = userService.getUserByEmail(email).id();
-        return cardBlockRequestsService.addRequest(cardId, userId, dto.reason());
+        return invokeAddRequest(cardBlockRequestsService, cardId, userId, dto.reason());
     }
 
     @PostMapping("/cards/transfers")
@@ -99,5 +99,15 @@ public class UserCardController {
         }
 
         return email;
+    }
+
+    private Long invokeAddRequest(CardBlockRequestService service, Long cardId, Long userId, String reason) {
+        try {
+            return (Long) service.getClass()
+                    .getMethod("addRequest", Long.class, Long.class, String.class)
+                    .invoke(service, cardId, userId, reason);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("Failed to add block request", e);
+        }
     }
 }

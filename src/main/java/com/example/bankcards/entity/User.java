@@ -48,6 +48,5 @@ public class User {
 
     @OneToMany(mappedBy = "cardOwner", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Card> userCards = new ArrayList<>();
-
 }
 

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 001-users
-      author: artem
+      author: Artem
       preConditions:
         - onFail: MARK_RAN
         - onError: HALT

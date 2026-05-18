@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS card_block_requests (
     processed_at timestamptz
 );
 
+
 CREATE UNIQUE INDEX IF NOT EXISTS uq_block_request_one_pending_per_card
     ON card_block_requests(card_id)
     WHERE status = 'pending';

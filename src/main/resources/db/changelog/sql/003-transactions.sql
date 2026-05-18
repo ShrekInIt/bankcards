@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS transactions(
     comment VARCHAR(200)
 );
 
+
 CREATE INDEX transactions_transaction_status_idx ON transactions (transaction_status);
 CREATE INDEX transactions_from_card_id_idx ON transactions (from_card_id);
 CREATE INDEX transactions_to_card_id_idx   ON transactions (to_card_id);

@@ -54,6 +54,7 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
+
     private static User user(Long id, String name, String email, UsersStatus status, boolean active, String passwordHash) {
         User user = new User();
         user.setId(id);

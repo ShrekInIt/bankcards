@@ -20,4 +20,4 @@ public record UserUpdateDto(
 
         @NotNull(message = "Active flag is required")
         Boolean isActive
-) {}
+) { }

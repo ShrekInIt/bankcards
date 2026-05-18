@@ -19,6 +19,6 @@ CREATE TABLE IF NOT EXISTS users(
 CREATE INDEX users_email_idx ON users(email);
 CREATE INDEX users_is_active_idx ON users(is_active);
 CREATE INDEX users_user_status_idx ON users(user_status);
---Admin123! - password
+
 INSERT INTO users (name, email, user_status, password_hash)
 VALUES ('artem', 'artyom@mail.ru', 'admin', '$2a$10$5.t71MFiwS0UQwIzWkNAIOktkH2nYowcb.xOhxW4xksqtSR/nyzFu');

@@ -43,6 +43,7 @@ class AuthControllerTest extends ControllerMockMvcTest {
     @MockitoBean
     private UserService userService;
 
+
     @Test
     void signUp_shouldReturn201_andPlainTextBody() throws Exception {
         UserCredentialsDto request = new UserCredentialsDto("Alice", "alice@example.com", "password123");

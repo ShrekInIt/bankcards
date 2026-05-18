@@ -54,6 +54,7 @@ class TransactionServiceImplTest {
         return card;
     }
 
+
     @Test
     void createTransaction_shouldTransferMoneyAndSaveTransaction() {
         TransferRequest request = new TransferRequest(20L, 10L, new BigDecimal("25.50"), "invoice");

@@ -4,4 +4,5 @@ public enum TransactionsStatus {
     delivered,
     expectation,
     rejection
+
 }

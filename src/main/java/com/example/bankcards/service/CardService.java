@@ -126,5 +126,4 @@ public interface CardService {
      * @return страница с картами
      */
     Page<UserReadCardResponse> findAllUserCardsByLast4(Long userId, String last4, int page, int size);
-
 }

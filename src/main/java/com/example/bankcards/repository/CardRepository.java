@@ -29,4 +29,5 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
     @EntityGraph(attributePaths = "cardOwner")
     Page<Card> findAllByDeletedFalseOrderByCreatedAtDesc(Pageable pageable);
+
 }

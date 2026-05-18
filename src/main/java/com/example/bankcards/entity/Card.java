@@ -53,4 +53,5 @@ public class Card {
 
     @Column(name = "is_deleted", nullable = false)
     private boolean deleted  = false;
+
 }

@@ -67,5 +67,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleOther(Exception ex) {
         return ResponseEntity.status(500).body("An error occurred: " + ex.getMessage());
     }
+
 }
 

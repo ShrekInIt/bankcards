@@ -14,4 +14,4 @@ public record CardCreateRequestDto(
 
         @NotNull LocalDate
         expiryDate
-) { }
+) {}

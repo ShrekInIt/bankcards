@@ -20,4 +20,5 @@ public interface IPanCrypto {
      * @return номер карты в открытом виде
      */
     String decrypt(byte[] panEnc);
+
 }

@@ -58,6 +58,7 @@ class CardBlockRequestsServiceImplTest {
         return card;
     }
 
+
     @Test
     void addRequest_shouldSavePendingRequest_andReturnId() {
         Card existingCard = card(5L, 77L, CardsStatus.active);

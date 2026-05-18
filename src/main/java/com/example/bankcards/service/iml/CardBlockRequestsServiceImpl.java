@@ -59,4 +59,5 @@ public class CardBlockRequestsServiceImpl implements CardBlockRequestService {
         req.setStatus(BlockRequestStatus.pending);
         return req;
     }
+
 }

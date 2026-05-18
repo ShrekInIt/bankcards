@@ -1,3 +1,4 @@
 package com.example.bankcards.dto.jwt;
 
-public record RefreshTokenDto(String refreshToken) {}
+public record RefreshTokenDto(String refreshToken)
+{}

@@ -61,4 +61,5 @@ public class AdminUserController {
 
         return userService.findAllUsers(page, size);
     }
+
 }

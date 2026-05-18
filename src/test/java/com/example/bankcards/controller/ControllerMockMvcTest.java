@@ -43,6 +43,7 @@ abstract class ControllerMockMvcTest {
         );
     }
 
+
     protected static UserResponseDto userResponseDto(Long id) {
         return new UserResponseDto(
                 id,

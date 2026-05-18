@@ -13,4 +13,5 @@ public interface CardBlockRequestService {
      * @return идентификатор созданной заявки
      */
     Long addRequest(Long cardId, Long userId, String reason);
+
 }

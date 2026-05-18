@@ -43,6 +43,7 @@ class AdminUserControllerTest extends ControllerMockMvcTest {
     @MockitoBean
     private JwtService jwtService;
 
+
     @SuppressWarnings("unused")
     @MockitoBean
     private CustomUserService customUserService;

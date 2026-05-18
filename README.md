@@ -18,3 +18,4 @@
 - **Maven:** 3.9.8
 - **PostgreSQL:** 17-alpine
 - **Spring Boot:** 3.5.10
+

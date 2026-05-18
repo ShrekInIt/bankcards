@@ -44,4 +44,5 @@ public class Transaction {
 
     @Column(name = "comment")
     private String comment;
+
 }

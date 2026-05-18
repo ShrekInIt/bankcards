@@ -7,7 +7,6 @@ import com.example.bankcards.dto.transfer.TransferResponse;
  * Сервис для выполнения переводов между картами.
  */
 public interface TransactionService {
-
     /**
      * Создаёт транзакцию перевода между картами пользователя.
      *

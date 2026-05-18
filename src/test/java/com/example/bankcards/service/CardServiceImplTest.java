@@ -72,6 +72,7 @@ class CardServiceImplTest {
         return u;
     }
 
+
     private static Card card(User owner, CardsStatus status, BigDecimal balance, LocalDate expiry) {
         Card c = new Card();
         c.setId(5L);

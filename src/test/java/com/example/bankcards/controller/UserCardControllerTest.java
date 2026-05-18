@@ -59,6 +59,7 @@ class UserCardControllerTest extends ControllerMockMvcTest {
     @MockitoBean
     private CardBlockRequestService cardBlockRequestsService;
 
+
     @MockitoBean
     private TransactionService transactionService;
 

@@ -178,4 +178,5 @@ public class CardServiceImpl implements CardService {
         Page<Card> cardsPage = cardRepository.findAllByCardOwner_IdAndLast4AndDeletedFalse(userId, last4, pageable);
         return cardsPage.map(Mapper::fromCardToUserReadCardResponse);
     }
+
 }

@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS cards(
     + interval '1 month' - interval '1 day')::date)
 );
 
+
 CREATE INDEX cards_card_owner_idx ON cards (card_owner);
 CREATE INDEX cards_card_status_idx ON cards (card_status);
 CREATE INDEX cards_expiry_date_idx ON cards (expiry_date);

@@ -41,4 +41,5 @@ public class CardBlockRequests {
 
     @Column(name = "processed_at")
     private OffsetDateTime processedAt;
+
 }

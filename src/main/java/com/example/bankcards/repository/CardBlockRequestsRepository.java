@@ -13,4 +13,5 @@ public interface CardBlockRequestsRepository extends JpaRepository<CardBlockRequ
     boolean existsByCard_IdAndStatus(Long cardId, BlockRequestStatus status);
 
     Optional<CardBlockRequests> findTopByCardIdOrderByCreatedAtDesc(Long cardId);
+
 }

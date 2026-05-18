@@ -27,5 +27,6 @@ public record UserReadCardResponse(
                 balance,
                 userId
         );
+
     }
 }

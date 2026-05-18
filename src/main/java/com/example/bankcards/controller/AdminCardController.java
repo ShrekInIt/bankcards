@@ -62,4 +62,5 @@ public class AdminCardController {
 
         return cardService.findAllCards(page, size);
     }
+
 }

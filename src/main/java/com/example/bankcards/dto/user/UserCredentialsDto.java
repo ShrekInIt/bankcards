@@ -16,4 +16,4 @@ public record UserCredentialsDto(
         @NotBlank(message = "Password is required")
         @Size(min = 8, message = "Password must be at least 8 characters")
         String password
-) {}
+) { }

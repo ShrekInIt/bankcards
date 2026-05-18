@@ -84,4 +84,5 @@ public interface UserService {
      * @return обновлённые токены аутентификации
      */
     JwtAuthenticationDto refreshToken(RefreshTokenDto refreshTokenDto);
+
 }

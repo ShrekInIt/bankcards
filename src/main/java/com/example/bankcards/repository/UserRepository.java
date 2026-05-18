@@ -25,4 +25,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmailAndIdNot(String email, @Positive(message = "id") Long id);
 
     Page<User> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
 }

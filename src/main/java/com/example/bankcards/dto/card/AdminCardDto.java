@@ -15,4 +15,4 @@ public record AdminCardDto(
         BigDecimal balance,
         Long ownerId,
         String ownerUsername
-) {}
+) { }

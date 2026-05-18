@@ -10,7 +10,6 @@
 - PostgreSQL
 - Maven
 - Docker / Docker Compose
-- 
 ## Версии инфраструктуры
 
 ### В проекте используются
